@@ -2,11 +2,11 @@
 #include "Settings.h"
 #include <msclr/marshal_cppstd.h>
 
-System::Void DVMEGAControl::Settings::btTest_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void DVMEGAControl::Settings::btnTest_Click(System::Object^ sender, System::EventArgs^ e)
 {
 }
 
-System::Void DVMEGAControl::Settings::btWrite_Click(System::Object^ sender, System::EventArgs^ e)
+System::Void DVMEGAControl::Settings::btnWrite_Click(System::Object^ sender, System::EventArgs^ e)
 {
     Sd->Host = msclr::interop::marshal_as< std::string >(tbHost->Text);
     Sd->User = msclr::interop::marshal_as< std::string >(tbUser->Text);
