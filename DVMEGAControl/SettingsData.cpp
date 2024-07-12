@@ -4,25 +4,36 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include "CkCrypt2.h"
 using namespace std;
 
 void SettingsData::setFactory()
 {
-    Host = "pi-star";
-    User = "pi-star";
-    Password = "raspberry";
-    Port = 22;
+    Host = FactoryHost;
+    User = FactoryUser;
+    Password = FactoryPassword;
+    Port = FactoryPort;
 }
 
 void SettingsData::read()
 {
-    ifstream input(Filename);
+    ifstream input(FilenameINI);
 
     if (input.is_open())
     {
+        CkCrypt2 crypt;
+
+        crypt.put_CryptAlgorithm(CryptAlgorithm);
+        crypt.put_CipherMode(CryptCipher);
+        crypt.put_KeyLength(CryptKeyLength);
+        crypt.put_PaddingScheme(CryptPadding);
+        crypt.put_EncodingMode(CryptEncod);
+        crypt.SetEncodedIV(CryptIvHex, CryptEncod);
+        crypt.SetEncodedKey(CryptKeyHex, CryptEncod);
+
         while (!input.eof())
         {
-            std::string line;
+            string line;
             getline(input, line);
 
             if (line.substr(0, ProWHost.length()) == ProWHost)
@@ -30,9 +41,9 @@ void SettingsData::read()
             else if (line.substr(0, ProWUser.length()) == ProWUser)
                 User = line.substr(ProWUser.length(), line.length() - ProWUser.length());
             else if (line.substr(0, ProWPassword.length()) == ProWPassword)
-                Password = line.substr(ProWPassword.length(), line.length() - ProWPassword.length());
+                Password = crypt.decryptStringENC((line.substr(ProWPassword.length(), line.length() - ProWPassword.length()).c_str()));
             else if (line.substr(0, ProWPort.length()) == ProWPort)
-                Port = std::stoi(line.substr(ProWPort.length(), line.length() - ProWPort.length()));
+                Port = stoi(line.substr(ProWPort.length(), line.length() - ProWPort.length()));
         }
     }
     else
@@ -44,12 +55,21 @@ void SettingsData::read()
 
 void SettingsData::write()
 {
-    ofstream output(Filename);
+    ofstream output(FilenameINI);
+    CkCrypt2 crypt;
+
+    crypt.put_CryptAlgorithm(CryptAlgorithm);
+    crypt.put_CipherMode(CryptCipher);
+    crypt.put_KeyLength(CryptKeyLength);
+    crypt.put_PaddingScheme(CryptPadding);
+    crypt.put_EncodingMode(CryptEncod);
+    crypt.SetEncodedIV(CryptIvHex, CryptEncod);
+    crypt.SetEncodedKey(CryptKeyHex, CryptEncod);
 
     output << ProWHost + Host + "\n";
     output << ProWUser + User + "\n";
-    output << ProWPassword + Password + "\n";
-    output << ProWPort + std::to_string(Port);
+    output << ProWPassword + crypt.encryptStringENC(Password.c_str()) + "\n";
+    output << ProWPort + to_string(Port);
 
     output.close();
 }

@@ -95,7 +95,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ChilkatRelDll.lib;WS2_32.Lib;dnsapi.lib;Advapi32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
@@ -108,7 +108,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ChilkatRelDll.lib;WS2_32.Lib;dnsapi.lib;Advapi32.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
@@ -130,6 +130,15 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chilkatDefs.h" />
+    <ClInclude Include="CkClassWithCallbacks.h" />
+    <ClInclude Include="CkCrypt2.h" />
+    <ClInclude Include="CkMultiByteBase.h" />
+    <ClInclude Include="CkObject.h" />
+    <ClInclude Include="CkSsh.h" />
+    <ClInclude Include="CkString.h" />
+    <ClInclude Include="ck_inttypes.h" />
+    <ClInclude Include="FileTime.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -139,6 +148,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="SettingsData.h" />
+    <ClInclude Include="SystemTime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />

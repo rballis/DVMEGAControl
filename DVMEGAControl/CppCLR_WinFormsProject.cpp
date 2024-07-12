@@ -14,14 +14,15 @@ using namespace System::Windows::Forms;
 [STAThread]
 int main()
 {
-    HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, 0, L"DVMEGAControl");
+    const LPCWSTR name = L"DVMEGAControl";
+    HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS, 0, name);
 
     if (!hMutex)
     {
         // Mutex doesn’t exist. This is
         // the first instance so create
         // the mutex.
-        hMutex = CreateMutex(0, 0, L"DVMEGAControl");
+        hMutex = CreateMutex(0, 0, name);
         Application::EnableVisualStyles();
         Application::SetCompatibleTextRenderingDefault(false);
         Application::Run(gcnew CppCLRWinFormsProject::Form1());

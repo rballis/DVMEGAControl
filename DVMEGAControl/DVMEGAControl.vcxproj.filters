@@ -35,6 +35,36 @@
     <ClInclude Include="SettingsData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CkSsh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chilkatDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CkClassWithCallbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CkString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ck_inttypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CkMultiByteBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CkObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CkCrypt2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CppCLR_WinFormsProject.cpp">

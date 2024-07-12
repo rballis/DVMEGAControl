@@ -55,6 +55,7 @@ namespace CppCLRWinFormsProject {
 		void btnBrowser_Click(System::Object^ sender, System::EventArgs^ e);
 		void btnSettings_Click(System::Object^ sender, System::EventArgs^ e);
 		void tiGatewayActivity_Tick(System::Object^ sender, System::EventArgs^ e);
+        void send2device(char* cmd, char* charset);
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
