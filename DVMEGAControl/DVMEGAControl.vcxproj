@@ -131,8 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chilkatDefs.h" />
+    <ClInclude Include="ChilkatUnlock.h" />
     <ClInclude Include="CkClassWithCallbacks.h" />
     <ClInclude Include="CkCrypt2.h" />
+    <ClInclude Include="CkGlobal.h" />
     <ClInclude Include="CkMultiByteBase.h" />
     <ClInclude Include="CkObject.h" />
     <ClInclude Include="CkSsh.h" />
