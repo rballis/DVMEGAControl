@@ -80,6 +80,14 @@ void CppCLRWinFormsProject::Form1::tiGatewayActivity_Tick(System::Object^ sender
     const std::string hostname = Sd->Host;
     const std::string adress("/mmdvmhost/lh.php#");
 
-    wbGatewayActivity->Refresh();
-    wbGatewayActivity->Url = gcnew System::Uri(gcnew String((scheme + hostname + adress).c_str()), System::UriKind::Absolute);
+    try
+    {
+        wbGatewayActivity->Refresh();
+        wbGatewayActivity->Url = gcnew System::Uri(gcnew String((scheme + hostname + adress).c_str()), System::UriKind::Absolute);
+    }
+    catch (UriFormatException^ uex)
+    {
+        tiGatewayActivity->Enabled = false;
+        MessageBox::Show(gcnew String(uex->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+    }
 }
