@@ -364,3 +364,4 @@ FodyWeavers.xsd
 *.h
 *.lib
 /DVMEGAControl/DVMEGAControl.ini
+/DVMEGAControlSetup
