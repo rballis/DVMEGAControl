@@ -54,7 +54,7 @@ void CppCLRWinFormsProject::Form1::btnShutdown_Click(System::Object^ sender, Sys
 
 void CppCLRWinFormsProject::Form1::btnBrowser_Click(System::Object^ sender, System::EventArgs^ e)
 {
-    const std::string scheme("http://");
+    const std::string scheme(Sd->ProtokollHost);
     const std::string hostname = Sd->Host;
     const std::string adress("/");
 
@@ -71,23 +71,41 @@ void CppCLRWinFormsProject::Form1::btnSettings_Click(System::Object^ sender, Sys
     if (settings->ShowDialog() == System::Windows::Forms::DialogResult::OK)
         wbGatewayActivity->Navigate("about:blank");
 
-    tiGatewayActivity->Enabled = true;
+    if (Sd->Interval > 0)
+    {
+        tiGatewayActivity->Enabled = true;
+        tiGatewayActivity->Interval = Sd->Interval * 1000;
+    }
 }
 
 void CppCLRWinFormsProject::Form1::tiGatewayActivity_Tick(System::Object^ sender, System::EventArgs^ e)
 {
-    const std::string scheme("http://");
-    const std::string hostname = Sd->Host;
-    const std::string adress("/mmdvmhost/lh.php#");
-
-    try
-    {
-        wbGatewayActivity->Refresh();
-        wbGatewayActivity->Url = gcnew System::Uri(gcnew String((scheme + hostname + adress).c_str()), System::UriKind::Absolute);
-    }
-    catch (UriFormatException^ uex)
+    if (Sd->Interval == 0)
     {
         tiGatewayActivity->Enabled = false;
-        MessageBox::Show(gcnew String(uex->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+    }
+    else
+    {
+        const std::string scheme(Sd->ProtokollHost);
+        const std::string hostname = Sd->Host;
+        const std::string adress(Sd->WEBAdr);
+
+        tiGatewayActivity->Interval = Sd->Interval * 1000;
+
+        try
+        {
+            wbGatewayActivity->Refresh();
+            wbGatewayActivity->Url = gcnew System::Uri(gcnew String((scheme + hostname + adress).c_str()), System::UriKind::Absolute);
+        }
+        catch (UriFormatException^ uex)
+        {
+            tiGatewayActivity->Enabled = false;
+            MessageBox::Show(gcnew String(uex->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+        }
+        catch (Exception^ e)
+        {
+            tiGatewayActivity->Enabled = false;
+            MessageBox::Show(gcnew String(e->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+        }
     }
 }

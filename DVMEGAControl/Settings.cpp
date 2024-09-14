@@ -31,6 +31,8 @@ System::Void DVMEGAControl::Settings::btnTest_Click(System::Object^ sender, Syst
 System::Void DVMEGAControl::Settings::btnWrite_Click(System::Object^ sender, System::EventArgs^ e)
 {
     Sd->Host = marshal_as<std::string>(tbHost->Text);
+    Sd->WEBAdr = marshal_as<std::string>(tbWEBAdr->Text);
+    Sd->Interval = std::stoi(marshal_as<std::string>(tbInterval->Text));
     Sd->User = marshal_as<std::string>(tbUser->Text);
     Sd->Password = marshal_as<std::string>(tbPassword->Text);
     Sd->Port = std::stoi(marshal_as<std::string>(tbPort->Text));

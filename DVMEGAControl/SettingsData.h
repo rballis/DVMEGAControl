@@ -19,7 +19,10 @@ public:
 
     void read(void);
     void write(void);
+    std::string ProtokollHost = "";
     std::string Host = "";
+    std::string WEBAdr = "";
+    std::int32_t Interval = 0;
     std::string User = "";
     std::string Password = "";
     std::int32_t Port = 0;
@@ -27,11 +30,17 @@ public:
 private:
     void setFactory(void);
     const std::string FilenameINI = ".\\DVMEGAControl.ini";
+    const std::string ProWProtokollHost = "ProtokollHost:";
     const std::string ProWHost = "Host:";
+    const std::string ProWWEBAdr = "WEBAdr:";
+    const std::string ProwInterval = "Interval:";
     const std::string ProWUser = "User:";
     const std::string ProWPassword = "Password:";
     const std::string ProWPort = "Port:";
+    const std::string FactoryProtokollHost = "http://";
     const std::string FactoryHost = "pi-star";
+    const std::string FactoryWEBAdr = "/mmdvmhost/lh.php#";
+    const std::int32_t FactroryIntrval = 1;
     const std::string FactoryUser = "pi-star";
     const std::string FactoryPassword = "raspberry";
     const std::int32_t FactoryPort = 22;

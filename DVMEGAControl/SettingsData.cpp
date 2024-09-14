@@ -9,7 +9,10 @@ using namespace std;
 
 void SettingsData::setFactory()
 {
+    ProtokollHost = FactoryProtokollHost;
     Host = FactoryHost;
+    WEBAdr = FactoryWEBAdr;
+    Interval = FactroryIntrval;
     User = FactoryUser;
     Password = FactoryPassword;
     Port = FactoryPort;
@@ -36,8 +39,14 @@ void SettingsData::read()
             string line;
             getline(input, line);
 
-            if (line.substr(0, ProWHost.length()) == ProWHost)
+            if (line.substr(0, ProWProtokollHost.length()) == ProWProtokollHost)
+                ProtokollHost = line.substr(ProWProtokollHost.length(), line.length() - ProWProtokollHost.length());
+            else if (line.substr(0, ProWHost.length()) == ProWHost)
                 Host = line.substr(ProWHost.length(), line.length() - ProWHost.length());
+            else if (line.substr(0, ProWWEBAdr.length()) == ProWWEBAdr)
+                WEBAdr = line.substr(ProWWEBAdr.length(), line.length() - ProWWEBAdr.length());
+            else if (line.substr(0, ProwInterval.length()) == ProwInterval)
+                Interval = stoi(line.substr(ProwInterval.length(), line.length() - ProwInterval.length()));
             else if (line.substr(0, ProWUser.length()) == ProWUser)
                 User = line.substr(ProWUser.length(), line.length() - ProWUser.length());
             else if (line.substr(0, ProWPassword.length()) == ProWPassword)
@@ -66,7 +75,10 @@ void SettingsData::write()
     crypt.SetEncodedIV(CryptIvHex, CryptEncod);
     crypt.SetEncodedKey(CryptKeyHex, CryptEncod);
 
+    output << ProWProtokollHost + ProtokollHost + "\n";
     output << ProWHost + Host + "\n";
+    output << ProWWEBAdr + WEBAdr + "\n";
+    output << ProwInterval + to_string(Interval) + "\n";
     output << ProWUser + User + "\n";
     output << ProWPassword + crypt.encryptStringENC(Password.c_str()) + "\n";
     output << ProWPort + to_string(Port);

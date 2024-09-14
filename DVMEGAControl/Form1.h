@@ -121,7 +121,7 @@ namespace CppCLRWinFormsProject {
 			this->wbGatewayActivity->Location = System::Drawing::Point(13, 41);
 			this->wbGatewayActivity->MinimumSize = System::Drawing::Size(20, 20);
 			this->wbGatewayActivity->Name = L"wbGatewayActivity";
-			this->wbGatewayActivity->Size = System::Drawing::Size(1269, 576);
+			this->wbGatewayActivity->Size = System::Drawing::Size(1269, 553);
 			this->wbGatewayActivity->TabIndex = 5;
 			this->wbGatewayActivity->Url = (gcnew System::Uri(L"", System::UriKind::Relative));
 			// 
@@ -135,7 +135,7 @@ namespace CppCLRWinFormsProject {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1294, 629);
+			this->ClientSize = System::Drawing::Size(1294, 611);
 			this->Controls->Add(this->wbGatewayActivity);
 			this->Controls->Add(this->btnSettings);
 			this->Controls->Add(this->btnBrowser);
