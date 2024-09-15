@@ -121,7 +121,7 @@ namespace CppCLRWinFormsProject {
 			this->wbGatewayActivity->Location = System::Drawing::Point(13, 41);
 			this->wbGatewayActivity->MinimumSize = System::Drawing::Size(20, 20);
 			this->wbGatewayActivity->Name = L"wbGatewayActivity";
-			this->wbGatewayActivity->Size = System::Drawing::Size(1269, 553);
+			this->wbGatewayActivity->Size = System::Drawing::Size(1269, 558);
 			this->wbGatewayActivity->TabIndex = 5;
 			this->wbGatewayActivity->Url = (gcnew System::Uri(L"", System::UriKind::Relative));
 			// 
