@@ -138,7 +138,7 @@ namespace DVMEGAControl {
 			// 
 			// btnWrite
 			// 
-			this->btnWrite->Location = System::Drawing::Point(189, 192);
+			this->btnWrite->Location = System::Drawing::Point(186, 192);
 			this->btnWrite->Name = L"btnWrite";
 			this->btnWrite->Size = System::Drawing::Size(75, 23);
 			this->btnWrite->TabIndex = 19;
@@ -148,7 +148,7 @@ namespace DVMEGAControl {
 			// 
 			// btnCanscel
 			// 
-			this->btnCanscel->Location = System::Drawing::Point(12, 192);
+			this->btnCanscel->Location = System::Drawing::Point(9, 192);
 			this->btnCanscel->Name = L"btnCanscel";
 			this->btnCanscel->Size = System::Drawing::Size(75, 23);
 			this->btnCanscel->TabIndex = 15;
@@ -168,7 +168,7 @@ namespace DVMEGAControl {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(18, 9);
+			this->label2->Location = System::Drawing::Point(15, 9);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(32, 13);
 			this->label2->TabIndex = 18;
@@ -185,7 +185,7 @@ namespace DVMEGAControl {
 			// 
 			// tbHost
 			// 
-			this->tbHost->Location = System::Drawing::Point(56, 6);
+			this->tbHost->Location = System::Drawing::Point(53, 6);
 			this->tbHost->Name = L"tbHost";
 			this->tbHost->Size = System::Drawing::Size(208, 20);
 			this->tbHost->TabIndex = 11;
@@ -244,7 +244,7 @@ namespace DVMEGAControl {
 			this->groupBox1->Controls->Add(this->label6);
 			this->groupBox1->Controls->Add(this->tbWEBAdr);
 			this->groupBox1->Controls->Add(this->tbInterval);
-			this->groupBox1->Location = System::Drawing::Point(12, 32);
+			this->groupBox1->Location = System::Drawing::Point(9, 32);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(252, 45);
 			this->groupBox1->TabIndex = 26;
@@ -260,7 +260,7 @@ namespace DVMEGAControl {
 			this->groupBox2->Controls->Add(this->label4);
 			this->groupBox2->Controls->Add(this->label3);
 			this->groupBox2->Controls->Add(this->tbPort);
-			this->groupBox2->Location = System::Drawing::Point(12, 83);
+			this->groupBox2->Location = System::Drawing::Point(9, 83);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(252, 103);
 			this->groupBox2->TabIndex = 27;
