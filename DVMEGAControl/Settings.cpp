@@ -12,7 +12,7 @@ System::Void DVMEGAControl::Settings::btnTest_Click(System::Object^ sender, Syst
 
     try
     {
-        if (!ssh.Connect(marshal_as<std::string>(tbHost->Text).c_str(), std::stoi(marshal_as<std::string>(tbPort->Text))))
+        if (!ssh.Connect(marshal_as<std::string>(tbHost->Text).c_str(), std::stoi(marshal_as<std::string>(nmPort->Text))))
             throw std::invalid_argument(ssh.lastErrorText());
 
         // Authenticate using login/password:
@@ -32,10 +32,10 @@ System::Void DVMEGAControl::Settings::btnWrite_Click(System::Object^ sender, Sys
 {
     Sd->Host = marshal_as<std::string>(tbHost->Text);
     Sd->WEBAdr = marshal_as<std::string>(tbWEBAdr->Text);
-    Sd->Interval = std::stoi(marshal_as<std::string>(tbInterval->Text));
+    Sd->Interval = std::stoi(marshal_as<std::string>(nmInterval->Text));
     Sd->User = marshal_as<std::string>(tbUser->Text);
     Sd->Password = marshal_as<std::string>(tbPassword->Text);
-    Sd->Port = std::stoi(marshal_as<std::string>(tbPort->Text));
+    Sd->Port = std::stoi(marshal_as<std::string>(nmPort->Text));
 
     Sd->write();
     DialogResult = System::Windows::Forms::DialogResult::OK;

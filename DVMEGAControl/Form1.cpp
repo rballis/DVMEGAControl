@@ -71,7 +71,8 @@ void CppCLRWinFormsProject::Form1::btnSettings_Click(System::Object^ sender, Sys
     if (settings->ShowDialog() == System::Windows::Forms::DialogResult::OK)
         wbGatewayActivity->Navigate("about:blank");
 
-    if (Sd->Interval > 0)
+    if ((Sd->Interval > 0) &&
+        (Sd->WEBAdr.length() > 0))
     {
         tiGatewayActivity->Enabled = true;
         tiGatewayActivity->Interval = Sd->Interval * 1000;
