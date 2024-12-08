@@ -65,6 +65,7 @@ void CppCLRWinFormsProject::Form1::btnSettings_Click(System::Object^ sender, Sys
 {
     DVMEGAControl::Settings^ settings = gcnew(DVMEGAControl::Settings);
 
+    _ASSERT(settings);
     tiGatewayActivity->Enabled = false;
 
     settings->SetSettings(Sd);
