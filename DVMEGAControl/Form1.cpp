@@ -32,7 +32,7 @@ void CppCLRWinFormsProject::Form1::send2device(char* command, char* charset)
     }
     catch (const std::exception& e)
     {
-        MessageBox::Show(gcnew String(e.what()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+        MessageBox::Show(gcnew String(e.what()), "Command send", MessageBoxButtons::OK, MessageBoxIcon::Error);
     }
 }
 
@@ -102,12 +102,12 @@ void CppCLRWinFormsProject::Form1::tiGatewayActivity_Tick(System::Object^ sender
         catch (UriFormatException^ uex)
         {
             tiGatewayActivity->Enabled = false;
-            MessageBox::Show(gcnew String(uex->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show(gcnew String(uex->ToString()), "WEB Browser", MessageBoxButtons::OK, MessageBoxIcon::Error);
         }
         catch (Exception^ e)
         {
             tiGatewayActivity->Enabled = false;
-            MessageBox::Show(gcnew String(e->ToString()), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show(gcnew String(e->ToString()), "WEB Browser", MessageBoxButtons::OK, MessageBoxIcon::Error);
         }
     }
 }

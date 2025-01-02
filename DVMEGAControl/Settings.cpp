@@ -19,12 +19,12 @@ System::Void DVMEGAControl::Settings::btnTest_Click(System::Object^ sender, Syst
         if (!ssh.AuthenticatePw(marshal_as<std::string>(tbUser->Text).c_str(), marshal_as<std::string>(tbPassword->Text).c_str()))
             throw std::invalid_argument(ssh.lastErrorText());
 
-        MessageBox::Show("Connection test successfully to the device", "Connection test", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
+        MessageBox::Show("Connection test successfully to the device", "Test connection", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
 
     }
     catch (const std::exception& e)
     {
-        MessageBox::Show(gcnew String(e.what()), "Error", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+        MessageBox::Show(gcnew String(e.what()), "Test connection", System::Windows::Forms::MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
     }
 }
 
