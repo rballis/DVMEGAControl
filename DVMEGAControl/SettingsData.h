@@ -1,82 +1,78 @@
-#include <string>
-
 #pragma once
+
+#include <string>
+#include <cstdint>
+
+// Forward declaration
+class CkCrypt2;
+
+/// <summary>
+/// Manages application settings with encrypted password storage.
+/// Settings are persisted to DVMEGAControl.ini file using AES-256-CBC encryption.
+/// </summary>
 class SettingsData
 {
 public:
-    SettingsData()
-    {
-        read();
-    }
+    // Constructors
+    SettingsData();
+    SettingsData(const std::string& host, const std::string& user, 
+                 const std::string& password, std::int32_t port);
 
-    SettingsData(std::string host, std::string user, std::string password, std::int32_t port)
-    {
-        Host = host;
-        User = user;
-        Password = password;
-        Port = port;
-    }
+    // Destructor
+    ~SettingsData() = default;
 
-    void read(void);
-    void write(void);
-    std::string ProtokollHost = "";
-    std::string Host = "";
-    std::string WEBAdr = "";
-    std::int32_t Interval = 0;
-    std::string User = "";
-    std::string Password = "";
-    std::int32_t Port = 0;
+    // Delete copy operations (safer for C++/CLI interop)
+    SettingsData(const SettingsData&) = delete;
+    SettingsData& operator=(const SettingsData&) = delete;
+
+    // Default move operations
+    SettingsData(SettingsData&&) noexcept = default;
+    SettingsData& operator=(SettingsData&&) noexcept = default;
+
+    // File I/O operations
+    void read();
+    void write() const;
+
+    // Public data members (required for C++/CLI Forms direct access)
+    std::string ProtokollHost;
+    std::string Host;
+    std::string WEBAdr;
+    std::int32_t Interval;
+    std::string User;
+    std::string Password;
+    std::int32_t Port;
 
 private:
-    void setFactory(void);
-    const std::string FilenameINI = ".\\DVMEGAControl.ini";
-    const std::string ProWProtokollHost = "ProtokollHost:";
-    const std::string ProWHost = "Host:";
-    const std::string ProWWEBAdr = "WEBAdr:";
-    const std::string ProwInterval = "Interval:";
-    const std::string ProWUser = "User:";
-    const std::string ProWPassword = "Password:";
-    const std::string ProWPort = "Port:";
-    const std::string FactoryProtokollHost = "http://";
-    const std::string FactoryHost = "pi-star";
-    const std::string FactoryWEBAdr = "/mmdvmhost/lh.php#";
-    const std::int32_t FactroryIntrval = 1;
-    const std::string FactoryUser = "pi-star";
-    const std::string FactoryPassword = "raspberry";
-    const std::int32_t FactoryPort = 22;
+    // Helper methods
+    void setFactory();
+    static void configureCrypto(CkCrypt2& crypt);
 
-    // AES is also known as Rijndael.		
-    const char* CryptAlgorithm = "aes";
+    // INI file configuration
+    static constexpr const char* FILENAME_INI = ".\\DVMEGAControl.ini";
+    
+    // INI file keys
+    static constexpr const char* KEY_PROTOKOLL_HOST = "ProtokollHost:";
+    static constexpr const char* KEY_HOST = "Host:";
+    static constexpr const char* KEY_WEB_ADR = "WEBAdr:";
+    static constexpr const char* KEY_INTERVAL = "Interval:";
+    static constexpr const char* KEY_USER = "User:";
+    static constexpr const char* KEY_PASSWORD = "Password:";
+    static constexpr const char* KEY_PORT = "Port:";
+    
+    // Factory default values
+    static constexpr const char* FACTORY_PROTOKOLL_HOST = "http://";
+    static constexpr const char* FACTORY_HOST = "pi-star";
+    static constexpr const char* FACTORY_WEB_ADR = "/mmdvmhost/lh.php#";
+    static constexpr std::int32_t FACTORY_INTERVAL = 1;
+    static constexpr const char* FACTORY_USER = "pi-star";
+    static constexpr const char* FACTORY_PASSWORD = "raspberry";
+    static constexpr std::int32_t FACTORY_PORT = 22;
 
-    // CipherMode may be "ecb", "cbc", "ofb", "cfb", "gcm", etc.
-    // Note: Check the online reference documentation to see the Chilkat versions
-    // when certain cipher modes were introduced.
-    const char* CryptCipher = "cbc";
-
-    // KeyLength may be 128, 192, 256
-    const int CryptKeyLength = 256;
-
-    // The padding scheme determines the contents of the bytes
-    // that are added to pad the result to a multiple of the
-    // encryption algorithm's block size.  AES has a block
-    // size of 16 bytes, so encrypted output is always
-    // a multiple of 16.
-    const int CryptPadding = 0;
-
-    // EncodingMode specifies the encoding of the output for
-    // encryption, and the input for decryption.
-    // It may be "hex", "url", "base64", or "quoted-printable".
-    const char* CryptEncod = "hex";
-
-    // An initialization vector is required if using CBC mode.
-    // ECB mode does not use an IV.
-    // The length of the IV is equal to the algorithm's block size.
-    // It is NOT equal to the length of the key.
-    const char* CryptIvHex = "000102030405069581413A0B0C0D0E0F";
-
-    // The secret key must equal the size of the key.  For
-    // 256-bit encryption, the binary secret key is 32 bytes.
-    // For 128-bit encryption, the binary secret key is 16 bytes.
-    const char* CryptKeyHex = "000102030405060708090A0B9581413F101112131415161718191A1B1C1D1E1F";
+    // AES-256-CBC cryptography configuration
+    static constexpr const char* CRYPT_ALGORITHM = "aes";
+    static constexpr const char* CRYPT_CIPHER = "cbc";
+    static constexpr std::int32_t CRYPT_KEY_LENGTH = 256;
+    static constexpr std::int32_t CRYPT_PADDING = 0;
+    static constexpr const char* CRYPT_ENCODING = "hex";
 };
 

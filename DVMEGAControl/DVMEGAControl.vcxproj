@@ -140,6 +140,7 @@
     <ClInclude Include="CkSsh.h" />
     <ClInclude Include="CkString.h" />
     <ClInclude Include="ck_inttypes.h" />
+    <ClInclude Include="CryptoConfig.h" />
     <ClInclude Include="FileTime.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>

@@ -1,87 +1,192 @@
 #include "pch.h"
 #include "SettingsData.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <algorithm>
+#include "CryptoConfig.h"
 #include "CkCrypt2.h"
-using namespace std;
+#include <fstream>
+#include <stdexcept>
+#include <cstring>
 
-void SettingsData::setFactory()
+// Default constructor
+SettingsData::SettingsData()
+  : ProtokollHost()
+  , Host()
+  , WEBAdr()
+  , Interval(0)
+  , User()
+  , Password()
+  , Port(0)
 {
-    ProtokollHost = FactoryProtokollHost;
-    Host = FactoryHost;
-    WEBAdr = FactoryWEBAdr;
-    Interval = FactroryIntrval;
-    User = FactoryUser;
-    Password = FactoryPassword;
-    Port = FactoryPort;
+    read();
 }
 
+// Parameterized constructor
+SettingsData::SettingsData(const std::string& host, const std::string& user, 
+                           const std::string& password, std::int32_t port)
+  : ProtokollHost(FACTORY_PROTOKOLL_HOST)
+  , Host(host)
+  , WEBAdr(FACTORY_WEB_ADR)
+  , Interval(FACTORY_INTERVAL)
+  , User(user)
+  , Password(password)
+  , Port(port)
+{
+}
+
+// Reset to factory defaults
+void SettingsData::setFactory()
+{
+    ProtokollHost = FACTORY_PROTOKOLL_HOST;
+    Host = FACTORY_HOST;
+    WEBAdr = FACTORY_WEB_ADR;
+    Interval = FACTORY_INTERVAL;
+    User = FACTORY_USER;
+    Password = FACTORY_PASSWORD;
+    Port = FACTORY_PORT;
+}
+
+// Configure cryptography (DRY principle - eliminates duplication)
+void SettingsData::configureCrypto(CkCrypt2& crypt)
+{
+    crypt.put_CryptAlgorithm(CRYPT_ALGORITHM);
+    crypt.put_CipherMode(CRYPT_CIPHER);
+    crypt.put_KeyLength(CRYPT_KEY_LENGTH);
+    crypt.put_PaddingScheme(CRYPT_PADDING);
+    crypt.put_EncodingMode(CRYPT_ENCODING);
+    crypt.SetEncodedIV(CryptoConfig::CryptIvHex, CRYPT_ENCODING);
+    crypt.SetEncodedKey(CryptoConfig::CryptKeyHex, CRYPT_ENCODING);
+}
+
+// Read settings from INI file
 void SettingsData::read()
 {
-    ifstream input(FilenameINI);
+    std::ifstream input(FILENAME_INI);
 
-    if (input.is_open())
-    {
-        CkCrypt2 crypt;
-
-        crypt.put_CryptAlgorithm(CryptAlgorithm);
-        crypt.put_CipherMode(CryptCipher);
-        crypt.put_KeyLength(CryptKeyLength);
-        crypt.put_PaddingScheme(CryptPadding);
-        crypt.put_EncodingMode(CryptEncod);
-        crypt.SetEncodedIV(CryptIvHex, CryptEncod);
-        crypt.SetEncodedKey(CryptKeyHex, CryptEncod);
-
-        while (!input.eof())
-        {
-            string line;
-            getline(input, line);
-
-            if (line.substr(0, ProWProtokollHost.length()) == ProWProtokollHost)
-                ProtokollHost = line.substr(ProWProtokollHost.length(), line.length() - ProWProtokollHost.length());
-            else if (line.substr(0, ProWHost.length()) == ProWHost)
-                Host = line.substr(ProWHost.length(), line.length() - ProWHost.length());
-            else if (line.substr(0, ProWWEBAdr.length()) == ProWWEBAdr)
-                WEBAdr = line.substr(ProWWEBAdr.length(), line.length() - ProWWEBAdr.length());
-            else if (line.substr(0, ProwInterval.length()) == ProwInterval)
-                Interval = stoi(line.substr(ProwInterval.length(), line.length() - ProwInterval.length()));
-            else if (line.substr(0, ProWUser.length()) == ProWUser)
-                User = line.substr(ProWUser.length(), line.length() - ProWUser.length());
-            else if (line.substr(0, ProWPassword.length()) == ProWPassword)
-                Password = crypt.decryptStringENC((line.substr(ProWPassword.length(), line.length() - ProWPassword.length()).c_str()));
-            else if (line.substr(0, ProWPort.length()) == ProWPort)
-                Port = stoi(line.substr(ProWPort.length(), line.length() - ProWPort.length()));
-        }
-    }
-    else
+    // Create INI with factory defaults if it doesn't exist
+    if (!input.is_open())
     {
         setFactory();
         write();
+        return;
     }
+
+    // Setup encryption
+    CkCrypt2 crypt;
+    configureCrypto(crypt);
+
+    // Parse INI file line by line
+    std::string line;
+    while (std::getline(input, line))  // FIX: Use getline() as condition, not eof()
+    {
+        // Skip empty lines
+        if (line.empty()) 
+            continue;
+
+        // Helper lambda to extract value after key prefix
+        auto extractValue = [&line](const char* key) -> std::string {
+            const std::size_t keyLen = std::strlen(key);
+            if (line.compare(0, keyLen, key) == 0)
+                return line.substr(keyLen);
+            return {};
+        };
+
+        // Parse each setting
+        if (line.compare(0, std::strlen(KEY_PROTOKOLL_HOST), KEY_PROTOKOLL_HOST) == 0)
+        {
+            ProtokollHost = extractValue(KEY_PROTOKOLL_HOST);
+        }
+        else if (line.compare(0, std::strlen(KEY_HOST), KEY_HOST) == 0)
+        {
+            Host = extractValue(KEY_HOST);
+        }
+        else if (line.compare(0, std::strlen(KEY_WEB_ADR), KEY_WEB_ADR) == 0)
+        {
+            WEBAdr = extractValue(KEY_WEB_ADR);
+        }
+        else if (line.compare(0, std::strlen(KEY_INTERVAL), KEY_INTERVAL) == 0)
+        {
+            const std::string value = extractValue(KEY_INTERVAL);
+            if (!value.empty())
+            {
+                try
+                {
+                    Interval = std::stoi(value);
+                }
+                catch (const std::exception&)
+                {
+                    // Fallback to factory default on parse error
+                    Interval = FACTORY_INTERVAL;
+                }
+            }
+        }
+        else if (line.compare(0, std::strlen(KEY_USER), KEY_USER) == 0)
+        {
+            User = extractValue(KEY_USER);
+        }
+        else if (line.compare(0, std::strlen(KEY_PASSWORD), KEY_PASSWORD) == 0)
+        {
+            const std::string encryptedPwd = extractValue(KEY_PASSWORD);
+            if (!encryptedPwd.empty())
+            {
+                try
+                {
+                    Password = crypt.decryptStringENC(encryptedPwd.c_str());
+                }
+                catch (...)
+                {
+                    // Fallback to factory default if decryption fails
+                    Password = FACTORY_PASSWORD;
+                }
+            }
+        }
+        else if (line.compare(0, std::strlen(KEY_PORT), KEY_PORT) == 0)
+        {
+            const std::string value = extractValue(KEY_PORT);
+            if (!value.empty())
+            {
+                try
+                {
+                    Port = std::stoi(value);
+                }
+                catch (const std::exception&)
+                {
+                    // Fallback to factory default on parse error
+                    Port = FACTORY_PORT;
+                }
+            }
+        }
+    }
+
+    input.close();
 }
 
-void SettingsData::write()
+// Write settings to INI file
+void SettingsData::write() const
 {
-    ofstream output(FilenameINI);
+    std::ofstream output(FILENAME_INI);
+    
+    if (!output.is_open())
+    {
+        throw std::runtime_error("Cannot open INI file for writing: " + std::string(FILENAME_INI));
+    }
+
+    // Setup encryption
     CkCrypt2 crypt;
+    configureCrypto(crypt);
 
-    crypt.put_CryptAlgorithm(CryptAlgorithm);
-    crypt.put_CipherMode(CryptCipher);
-    crypt.put_KeyLength(CryptKeyLength);
-    crypt.put_PaddingScheme(CryptPadding);
-    crypt.put_EncodingMode(CryptEncod);
-    crypt.SetEncodedIV(CryptIvHex, CryptEncod);
-    crypt.SetEncodedKey(CryptKeyHex, CryptEncod);
+    // Write all settings (using << operator chaining for efficiency)
+    output << KEY_PROTOKOLL_HOST << ProtokollHost << '\n'
+           << KEY_HOST << Host << '\n'
+           << KEY_WEB_ADR << WEBAdr << '\n'
+           << KEY_INTERVAL << Interval << '\n'
+           << KEY_USER << User << '\n'
+           << KEY_PASSWORD << crypt.encryptStringENC(Password.c_str()) << '\n'
+           << KEY_PORT << Port;
 
-    output << ProWProtokollHost + ProtokollHost + "\n";
-    output << ProWHost + Host + "\n";
-    output << ProWWEBAdr + WEBAdr + "\n";
-    output << ProwInterval + to_string(Interval) + "\n";
-    output << ProWUser + User + "\n";
-    output << ProWPassword + crypt.encryptStringENC(Password.c_str()) + "\n";
-    output << ProWPort + to_string(Port);
+    // Verify write succeeded
+    if (!output.good())
+    {
+        throw std::runtime_error("Failed to write to INI file: " + std::string(FILENAME_INI));
+    }
 
     output.close();
 }
